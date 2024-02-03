@@ -1,5 +1,6 @@
 package com.example.unitconverterapp
 
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,21 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.BaselineShift
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.roundToInt
-
 
 @Composable
-fun  VolumeConversion() {
+fun  PressureConversion() {
       Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -56,30 +49,29 @@ fun  VolumeConversion() {
 
             var inputValue by remember { mutableStateOf("") }
             var outputValue by remember { mutableStateOf("0.0") }
-            var inputUnit by remember { mutableStateOf("l") }
-            var outputUnit by remember { mutableStateOf("l") }
+            var inputUnit by remember { mutableStateOf("Pa") }
+            var outputUnit by remember { mutableStateOf("Pa") }
             var iexpand by remember { mutableStateOf(false) }
             var oexpand by remember { mutableStateOf(false) }
-            var iconversion = remember { mutableStateOf(1.0000) }
-            var oconversion = remember { mutableStateOf(1.0000) }
+            var iconversion = remember { mutableStateOf(1.0) }
+            var oconversion = remember { mutableStateOf(1.0) }
 
             fun convert() {
                   val inputValueDouble = inputValue.toDoubleOrNull() ?: 0.0000
                   val result =
                         (inputValueDouble * iconversion.value * 100.0000 / oconversion.value) / 100.0000
-                  val res= BigDecimal(result).setScale(7, RoundingMode.HALF_EVEN)
+                  val res = BigDecimal(result).setScale(7, RoundingMode.HALF_EVEN)
 //                  result=BigDecimal(3.14159265359).setScale(2, RoundingMode.HALF_EVEN)
-                  outputValue=res.toString()
+                  outputValue = res.toString()
             }
-
             Spacer(modifier = Modifier.height(16.dp))
-            Image(painter = painterResource(id =R.drawable.volume), contentDescription = "Length",modifier= Modifier
+            Image(painter = painterResource(id =R.drawable.pressure), contentDescription = "Length",modifier= Modifier
                   .height(150.dp)
                   .width(150.dp)
                   .padding(16.dp))
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(text = "Volume Conversion", style = MaterialTheme.typography.headlineLarge)
+            Text(text = "Pressure Conversion", style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(32.dp))
             OutlinedTextField(
                   value = inputValue, onValueChange = {
@@ -89,7 +81,6 @@ fun  VolumeConversion() {
                   label = { Text(text = "Enter Value") },
                   keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
-
             Spacer(modifier = Modifier.height(16.dp))
 
             Row {
@@ -97,7 +88,11 @@ fun  VolumeConversion() {
                   Box(modifier = Modifier)
                   {
                         Button(onClick = { iexpand = true }) {
-                              Text(text = inputUnit, fontSize = 18.sp, modifier = Modifier.padding(4.dp))
+                              Text(
+                                    text = inputUnit,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(4.dp)
+                              )
                               Icon(
                                     Icons.Default.ArrowDropDown,
                                     contentDescription = "Drop Down",
@@ -107,66 +102,83 @@ fun  VolumeConversion() {
                                     expanded = iexpand,
                                     onDismissRequest = { iexpand = false }) {
                                     DropdownMenuItem(
-                                          text = { Text(text = "Litres (l)") },
+                                          text = { Text(text = "Pascal (Pa)") },
                                           onClick = {
-                                                inputUnit = "l"
-                                                iconversion.value = 1.0000
+                                                inputUnit = "Pa"
+                                                iconversion.value = 1.0
                                                 iexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Centilitres (cl)") },
+                                          text = { Text(text = "Kilopascal") },
                                           onClick = {
-                                                inputUnit = "cl"
-                                                iconversion.value = 0.0100
+                                                inputUnit = "KPa"
+                                                iconversion.value = 1000.0
                                                 iexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Millilitres (ml)") },
+                                          text = { Text(text = "Bar") },
                                           onClick = {
-                                                inputUnit = "ml"
-                                                iconversion.value = 0.0010
-                                                iexpand = false
-                                                convert()
-                                          })
-
-                                    DropdownMenuItem(
-                                          text = { Text(text = "Kilolitres (Kl)") },
-                                          onClick = {
-                                                inputUnit = "Kl"
-                                                iconversion.value = 1000.0000
+                                                inputUnit = "Bar"
+                                                iconversion.value = 100000.0
                                                 iexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "US Gallons (gal)") },
+                                          text = { Text(text = "Atmosphere (Atm)") },
                                           onClick = {
-                                                inputUnit = "gal"
-                                                iconversion.value = 3.7854
+                                                inputUnit = "Atm"
+                                                iconversion.value = 101325.0
                                                 iexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(
-                                                text="Cubic Metre (cm³)"
-                                          ) },
+                                          text = { Text(text = "Millimetre of Hg (mmHg)") },
                                           onClick = {
-                                                inputUnit = "cm³"
-                                                iconversion.value = 1000.0000
+                                                inputUnit = "mmHg"
+                                                iconversion.value = 133.322
                                                 iexpand = false
                                                 convert()
                                           })
-
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Torr") },
+                                          onClick = {
+                                                inputUnit = "Torr"
+                                                iconversion.value = 133.322
+                                                iexpand = false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Pound/Square in (psi)") },
+                                          onClick = {
+                                                inputUnit = "psi"
+                                                iconversion.value = 6894.76
+                                                iexpand = false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Kg-force/Square cm (Kgf/cm²") },
+                                          onClick = {
+                                                inputUnit = "Kgf/cm²"
+                                                iconversion.value = 98066.5
+                                                iexpand = false
+                                                convert()
+                                          })
                               }
                         }
                   }
+
                   Spacer(modifier = Modifier.width(16.dp))
 
                   Box(modifier = Modifier)
                   {
                         Button(onClick = { oexpand = true }) {
-                              Text(text = outputUnit, fontSize = 18.sp, modifier = Modifier.padding(4.dp))
+                              Text(
+                                    text = outputUnit,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(4.dp)
+                              )
                               Icon(
                                     Icons.Default.ArrowDropDown,
                                     contentDescription = "Drop Down",
@@ -176,61 +188,69 @@ fun  VolumeConversion() {
                                     expanded = oexpand,
                                     onDismissRequest = { oexpand = false }) {
                                     DropdownMenuItem(
-                                          text = { Text(text = "Litres (l)") },
+                                          text = { Text(text = "Pascal (Pa)") },
                                           onClick = {
-                                                outputUnit = "l"
+                                                outputUnit = "Pa"
                                                 oconversion.value = 1.0
                                                 oexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Centilitres (cl)") },
+                                          text = { Text(text = "Kilopascal") },
                                           onClick = {
-                                                outputUnit = "cl"
-                                                oconversion.value = 0.0100
+                                                outputUnit = "KPa"
+                                                oconversion.value = 1000.0
                                                 oexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Millilitres (ml)") },
+                                          text = { Text(text = "Bar") },
                                           onClick = {
-                                                outputUnit = "ml"
-                                                oconversion.value = 0.0010
-                                                oexpand = false
-                                                convert()
-                                          })
-
-                                    DropdownMenuItem(
-                                          text = { Text(text = "Kilolitres (Kl)") },
-                                          onClick = {
-                                                outputUnit = "Kl"
-                                                oconversion.value = 1000.0000
+                                                outputUnit = "Bar"
+                                                oconversion.value = 100000.0
                                                 oexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-
-                                          text = { Text(text = "US Gallons (gal)") },
+                                          text = { Text(text = "Atmosphere (Atm)") },
                                           onClick = {
-                                                outputUnit = "gal"
-                                                oconversion.value = 3.7854
+                                                outputUnit = "Atm"
+                                                oconversion.value = 101325.0
                                                 oexpand = false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = {
-                                                 Text(
-                                                       text="Cubic Metres (cm³)"
-                                                 )
-                                          },
+                                          text = { Text(text = "Millimetre of Hg (mmHg)") },
                                           onClick = {
-                                                outputUnit = "cm³"
-                                                oconversion.value = 1000.0000
+                                                outputUnit = "mmHg"
+                                                oconversion.value = 133.322
                                                 oexpand = false
                                                 convert()
                                           })
-
-
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Torr") },
+                                          onClick = {
+                                                outputUnit = "Torr"
+                                                oconversion.value = 133.322
+                                                oexpand = false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Pound/Square in (psi)") },
+                                          onClick = {
+                                                outputUnit = "psi"
+                                                oconversion.value = 6894.76
+                                                oexpand = false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Kg-force/Square cm (Kgf/cm²") },
+                                          onClick = {
+                                                outputUnit = "Kgf/cm²"
+                                                oconversion.value = 98066.5
+                                                oexpand = false
+                                                convert()
+                                          })
                               }
                         }
                   }
@@ -243,16 +263,18 @@ fun  VolumeConversion() {
 //            }
             }
             Spacer(modifier = Modifier.height(16.dp))
+
             Box(
-                  modifier = Modifier.wrapContentSize()
+                  modifier = Modifier
+                        .wrapContentSize()
+                        .padding(8.dp)
                         .border(
                               border = BorderStroke(4.dp, Color(0XFF018786)),
                               shape = RoundedCornerShape(10)
-                        )
-                        .align(Alignment.CenterHorizontally)
+                        ).align(Alignment.CenterHorizontally)
             ) {
                   Text(
-                        text = "Result:$outputValue $outputUnit",
+                        text = "Result: $outputValue $outputUnit",
                         style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(8.dp)
                   )
@@ -260,3 +282,4 @@ fun  VolumeConversion() {
             }
       }
 }
+

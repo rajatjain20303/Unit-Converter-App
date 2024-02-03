@@ -55,31 +55,31 @@ fun MyApp(navController : NavHostController) {
             }
             composable(route = Screens.AreaScreen.route)
             {
-//                  AreaConversion()
+                  AreaConversion()
             }
             composable(route = Screens.SpeedScreen.route)
             {
-                //  SpeedConversion()
+                  SpeedConversion()
             }
             composable(route = Screens.TimeScreen.route)
             {
-//                  TimeConversion()
+                  TimeConversion()
             }
             composable(route = Screens.TemperatureScreen.route)
             {
-//                  TemperatureConversion()
+                  PressureConversion()
             }
             composable(route = Screens.VolumeScreen.route)
             {
-                 // VolumeConversion()
+                 VolumeConversion()
             }
             composable(route = Screens.CurrencyScreen.route)
             {
-              //    CurrencyConversion()
+                  CurrencyConversion()
             }
             composable(route = Screens.DataScreen.route)
             {
-              //    DataConversion()
+                  DataConversion()
             }
 
       }

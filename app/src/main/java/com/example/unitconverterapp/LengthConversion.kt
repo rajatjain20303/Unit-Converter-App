@@ -1,6 +1,7 @@
 package com.example.unitconverterapp
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,34 +33,46 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.roundToInt
 
 @Composable
 fun  LengthConversion(){
       Column(modifier= Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
 
             var inputValue by remember { mutableStateOf("") }
             var outputValue by remember { mutableStateOf("0.0") }
-            var inputUnit by remember { mutableStateOf("Meters") }
-            var outputUnit by remember { mutableStateOf("Meters") }
+            var inputUnit by remember { mutableStateOf("m") }
+            var outputUnit by remember { mutableStateOf("m") }
             var iexpand by remember { mutableStateOf(false) }
             var oexpand by remember { mutableStateOf(false) }
             var  iconversion= remember { mutableStateOf(1.0) }
             var oconversion= remember{ mutableStateOf(1.0) }
 
             fun convert(){
-                  val inputValueDouble=inputValue.toDoubleOrNull() ?:0.0
-                  val result=(inputValueDouble*iconversion.value*100.0/oconversion.value).roundToInt()/100.0
-                  outputValue=result.toString()
+                  val inputValueDouble=inputValue.toDoubleOrNull() ?:0.0000
+                  val result=(inputValueDouble*iconversion.value*100.0000/oconversion.value)/100.0000
+                  val res= BigDecimal(result).setScale(7, RoundingMode.HALF_EVEN)
+//                  result=BigDecimal(3.14159265359).setScale(2, RoundingMode.HALF_EVEN)
+                  outputValue=res.toString()
             }
 
-            Text(text = "Unit Converter", style = MaterialTheme.typography.headlineLarge)
             Spacer(modifier = Modifier.height(16.dp))
+            Image(painter = painterResource(id =R.drawable.length), contentDescription = "Length",modifier= Modifier
+                  .height(150.dp)
+                  .width(150.dp)
+                  .padding(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = "Length Conversion", style = MaterialTheme.typography.headlineLarge)
+            Spacer(modifier = Modifier.height(32.dp))
             OutlinedTextField(value = inputValue, onValueChange = {inputValue=it
                   convert()},
                   label = { Text(text = "Enter Value") },
@@ -71,47 +84,80 @@ fun  LengthConversion(){
                   Box(modifier = Modifier)
                   {
                         Button(onClick = { iexpand=true}) {
-                              Text(text =inputUnit)
+                              Text(text =inputUnit, fontSize = 18.sp, modifier = Modifier.padding(4.dp))
                               Icon(Icons.Default.ArrowDropDown, contentDescription = "Drop Down",modifier= Modifier )
                               DropdownMenu(expanded = iexpand, onDismissRequest = { iexpand=false }) {
                                     DropdownMenuItem(
-                                          text = { Text(text = "Meter") },
+                                          text = { Text(text = "Feet (ft)") },
                                           onClick = {
-                                                inputUnit="Meter"
-                                                iconversion.value=1.0
+                                                inputUnit="ft"
+                                                iconversion.value=0.3048
                                                 iexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Centimeter") },
+                                          text = { Text(text = "inches (in)") },
                                           onClick = {
-                                                inputUnit="Centimeter"
-                                                iconversion.value=0.01
+                                                inputUnit="in"
+                                                iconversion.value=0.0254
                                                 iexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Millimeter") },
+                                          text = { Text(text = "Yard (yd)") },
                                           onClick = {
-                                                inputUnit="Millimeter"
-                                                iconversion.value=0.001
+                                                inputUnit="yd"
+                                                iconversion.value=0.9144
+                                                iexpand=false
+                                                convert()
+                                          })
+
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Metre (m)") },
+                                          onClick = {
+                                                inputUnit="m"
+                                                iconversion.value=1.0000
+                                                iexpand=false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Centimetre (cm)") },
+                                          onClick = {
+                                                inputUnit="cm"
+                                                iconversion.value=0.0100
+                                                iexpand=false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Millimetre (mm)") },
+                                          onClick = {
+                                                inputUnit="mm"
+                                                iconversion.value=0.0010
                                                 iexpand=false
                                                 convert() })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Decimeter") },
+                                          text = { Text(text = "Decimetre (dm)") },
                                           onClick = {
-                                                inputUnit="Decimeter"
-                                                iconversion.value=0.1
+                                                inputUnit="dm"
+                                                iconversion.value=0.1000
                                                 iexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Kilometer") },
+                                          text = { Text(text = "Kilometre (Km)") },
                                           onClick = {
-                                                inputUnit="Kilometer"
-                                                iconversion.value=1000.0
+                                                inputUnit="Km"
+                                                iconversion.value=1000.0000
                                                 iexpand=false
                                                 convert() })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Mile (mi)") },
+                                          onClick = {
+                                                inputUnit="mi"
+                                                iconversion.value=1609.344
+                                                iexpand=false
+                                                convert()
+                                          })
                               }
                         }
                   }
@@ -121,46 +167,79 @@ fun  LengthConversion(){
                   Box(modifier = Modifier)
                   {
                         Button(onClick = { oexpand=true }) {
-                              Text(text = outputUnit)
+                              Text(text = outputUnit, fontSize = 18.sp, modifier = Modifier.padding(4.dp))
                               Icon(Icons.Default.ArrowDropDown, contentDescription = "Drop Down",modifier= Modifier )
                               DropdownMenu(expanded = oexpand, onDismissRequest = { oexpand=false }) {
                                     DropdownMenuItem(
-                                          text = { Text(text = "Meter") },
+                                          text = { Text(text = "Feet (ft)") },
                                           onClick = {
-                                                outputUnit="Meter"
-                                                oconversion.value=1.0
+                                                outputUnit="ft"
+                                                oconversion.value=0.3048
+                                                oexpand=false
+                                                convert()
+                                          })
+
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Inches (in)") },
+                                          onClick = {
+                                                outputUnit="in"
+                                                oconversion.value=0.0254
                                                 oexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Centimeter") },
+                                          text = { Text(text = "Yard (yd)") },
                                           onClick = {
-                                                outputUnit="Centimeter"
-                                                oconversion.value=0.01
+                                                outputUnit="yd"
+                                                oconversion.value=0.9144
                                                 oexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Millimeter") },
+                                          text = { Text(text = "Metre (m)") },
                                           onClick = {
-                                                outputUnit="Milimeter"
-                                                oconversion.value=0.001
+                                                outputUnit="m"
+                                                oconversion.value=1.0000
                                                 oexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Decimeter") },
+                                          text = { Text(text = "Centimetre (cm)") },
                                           onClick = {
-                                                outputUnit="Decimeter"
-                                                oconversion.value=0.1
+                                                outputUnit="cm"
+                                                oconversion.value=0.0100
                                                 oexpand=false
                                                 convert()
                                           })
                                     DropdownMenuItem(
-                                          text = { Text(text = "Kilometer") },
+                                          text = { Text(text = "Millimetre (mm)") },
                                           onClick = {
-                                                outputUnit="Kilometer"
-                                                oconversion.value=1000.0
+                                                outputUnit="mm"
+                                                oconversion.value=0.0010
+                                                oexpand=false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Decimetre (dm)") },
+                                          onClick = {
+                                                outputUnit="dm"
+                                                oconversion.value=0.1000
+                                                oexpand=false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Kilometre (Km)") },
+                                          onClick = {
+                                                outputUnit="Km"
+                                                oconversion.value=1000.0000
+                                                oexpand=false
+                                                convert()
+                                          })
+                                    DropdownMenuItem(
+                                          text = { Text(text = "Miles (mi)") },
+                                          onClick = {
+                                                outputUnit="mi"
+                                                oconversion.value=1609.344
                                                 oexpand=false
                                                 convert()
                                           })
@@ -180,7 +259,8 @@ fun  LengthConversion(){
 
             Box(modifier =Modifier.wrapContentSize()
                   . border(border = BorderStroke(4.dp, Color(0XFF018786)), shape = RoundedCornerShape(10)
-            )){
+            )
+                  .align(Alignment.CenterHorizontally)){
                   Text(text = "Result: $outputValue $outputUnit", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(8.dp))
 
             }
